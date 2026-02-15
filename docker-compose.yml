@@ -11,9 +11,9 @@ services:
       resources:
         limits:
           memory: 128M
-    tunnel:
-      image: cloudflare/cloudflared:latest
-      restart: always
-      environment:
-        - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-      command: tunnel run
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    command: tunnel run

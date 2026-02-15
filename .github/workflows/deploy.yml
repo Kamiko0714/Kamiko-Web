@@ -5,16 +5,45 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Execute Remote Deploy Script via SSH
+      - name: 📡 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 🏗️ Install & Build
+        run: |
+          npm install
+          npm run build
+
+      - name: 📤 Upload Build Files (SCP)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AZURE_VM_IP }}
+          username: ${{ secrets.AZURE_VM_USER }}
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          port: 22
+          source: "dist/*"
+          target: "~/Kamiko-Web/"
+
+      - name: 🚀 Finalize Deployment (SSH)
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.AZURE_VM_IP }}
           username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          port: 22
           script: |
             cd ~/Kamiko-Web
+            # Berikan izin agar Nginx bisa baca folder dist yang baru dikirim
+            sudo chown -R ${{ secrets.AZURE_VM_USER }}:${{ secrets.AZURE_VM_USER }} ~/Kamiko-Web/dist
+            chmod -R 755 ~/Kamiko-Web/dist
+            # Jalankan script deploy (pastikan deploy.sh tidak menghapus folder dist)
             chmod +x deploy.sh
             ./deploy.sh

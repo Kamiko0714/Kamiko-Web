@@ -1,28 +1,16 @@
 #!/bin/bash
+cd ~/Kamiko-Web
 
-echo "----------------------------------------"
-echo "💠 KAMIKO - AUTOMATED DEPLOYMENT SYSTEM"
-echo "----------------------------------------"
-cd "$(dirname "$0")"
+# 1. Update file config
+git fetch origin main
+git checkout main README.md deploy.sh docker-compose.yml .gitignore 2>/dev/null || true
 
-# 2. Ambil data terbaru dari GitHub
-echo "📡 Pulling latest data from GitHub..."
-git fetch --all
-git reset --hard origin/main
-
-# 3. Validasi Keamanan
+# 2. Safety check
 if [ ! -f .env ]; then
-    echo "❌ ERROR: File .env tidak ditemukan di VM!"
-    echo "Tips: Buat file .env secara manual di VM dan masukkan TOKEN & KEY."
+    echo "❌ ERROR: .env missing! Deployment aborted."
     exit 1
 fi
 
-# 4. Eksekusi Docker
-echo "🏗️  Reconstructing Virtual Environment..."
+# 3. Eksekusi
 docker compose down --remove-orphans
 docker compose up -d --build
-
-echo "----------------------------------------"
-echo "✅ SYSTEM OPERATIONAL - DEPLOYMENT COMPLETE"
-echo "----------------------------------------"
-docker ps

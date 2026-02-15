@@ -1,5 +1,5 @@
 services:
-  kamiko-portal:
+  kamiko-web:
     image: nginx:alpine
     container_name: kamiko-web
     ports:
@@ -11,6 +11,7 @@ services:
       resources:
         limits:
           memory: 128M
+
   tunnel:
     image: cloudflare/cloudflared:latest
     restart: always

@@ -3,7 +3,7 @@ services:
     image: nginx:alpine
     container_name: kamiko-web
     ports:
-      - "80:80"
+      - "14070:80"
     volumes:
       - ./dist:/usr/share/nginx/html:ro
     restart: always

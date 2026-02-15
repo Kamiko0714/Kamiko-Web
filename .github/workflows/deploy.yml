@@ -19,6 +19,8 @@ jobs:
 
       - name: 🏗️ Install & Build
         run: |
+          npm ci
+          chmod +x node_modules/.bin/vite
           npm install
           npm run build
 

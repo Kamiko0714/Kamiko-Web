@@ -1,0 +1,25 @@
+@media (max-width: 850px) {
+  .project-bento-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding-top: 180px;
+  }
+
+  pre {
+    font-size: 11px !important; 
+  }
+
+  .modern-card {
+    padding: 20px;
+  }
+
+  .global-controls {
+    top: 15px;
+    right: 15px;
+    transform: scale(0.9);
+  }
+}

@@ -1,0 +1,26 @@
+:root {
+  --neon: #00ff00;
+  --bg: #000000;
+  --text-main: #e0e0e0;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(0, 255, 0, 0.15);
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  overflow-x: hidden;
+}
+
+.fade-transition {
+  animation: matrixDissolve 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes matrixDissolve {
+  0% { opacity: 0; filter: brightness(2) blur(10px); transform: scale(0.98); }
+  100% { opacity: 1; filter: brightness(1) blur(0); transform: scale(1); }
+}

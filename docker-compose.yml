@@ -1,0 +1,13 @@
+services:
+  kamiko-portal:
+    image: nginx:alpine
+    container_name: kamiko-web
+    ports:
+      - "80:80"
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 128M

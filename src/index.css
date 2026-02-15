@@ -1,0 +1,93 @@
+/* src/index.css - Global Base & Terminal Effects */
+:root {
+  --glow-color: #ffffff;
+  --bg-color: #000000;
+}
+
+/* 1. Base Reset */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--glow-color);
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* 2. CRT Scanline Effect */
+.terminal-container::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 10;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+/* 3. Layout Container */
+.terminal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  background: #000;
+  animation: flicker 0.15s infinite;
+}
+
+/* 4. Preformatted ASCII Logic */
+pre {
+  color: var(--glow-color) !important;
+  text-shadow: 0 0 5px #ffffff;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+  font-size: 14px !important; 
+  letter-spacing: 0px !important;
+  text-rendering: crispEdges !important;
+  -webkit-font-smoothing: none !important;
+  line-height: 1.2 !important;
+  white-space: pre !important;
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+/* 5. Interactive Links */
+pre a {
+  display: inline;
+  color: var(--glow-color) !important;
+  text-decoration: none;
+  background: rgba(0, 255, 0, 0.05);
+  transition: background 0.1s steps(2);
+  z-index: 11;
+}
+
+pre a:hover {
+  background: var(--glow-color) !important;
+  color: #000 !important;
+  box-shadow: 0 0 10px var(--glow-color);
+}
+
+/* 6. Utility & Animations */
+.blink { animation: blink-animation 1s steps(2, start) infinite; }
+@keyframes blink-animation { to { visibility: hidden; } }
+
+@keyframes flicker {
+  0% { opacity: 0.97; }
+  5% { opacity: 0.95; }
+  10% { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+
+/* Responsive Stepping */
+@media (max-width: 1000px) { pre { font-size: 12px !important; } }
+@media (max-width: 600px) { pre { font-size: 8px !important; } }
+@media (prefers-reduced-motion: reduce) {
+  .terminal-container, .blink, pre { animation: none !important; }
+}

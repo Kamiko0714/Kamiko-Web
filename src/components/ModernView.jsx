@@ -197,7 +197,7 @@ export default function ModernView({ t, lang }) {
                 <img src={LineIcon} alt="LINE" />
                 <div className="node-line"></div>
               </a>
-              <a href="https://discordapp.com/users/mikade0714" target="_blank" className="node-satellite discord">
+              <a href="https://discordapp.com/users/1282546253707608135" target="_blank" className="node-satellite discord">
                 <img src={DiscordIcon} alt="Discord" />
                 <div className="node-line"></div>
               </a>

@@ -719,3 +719,50 @@ button:hover, .view-detail-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 255, 136, 0.15);
 }
+
+/* ===================================================
+   📱 MOBILE RESPONSIVE OVERRIDES
+   =================================================== */
+
+@media (max-width: 850px) {
+  .project-bento-grid,
+  .modern-grid,
+  .projects-grid-internal,
+  .projects-grid-2x2 {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  main, .modern-container {
+    padding-top: 20px !important;
+    margin-top: 0 !important;
+  }
+
+  .global-controls {
+    position: relative !important;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 30px;
+    top: auto !important;
+    right: auto !important;
+    transform: none !important;
+  }
+
+  .modern-card, .project-card-bento {
+    padding: 20px !important;
+  }
+
+  pre {
+    font-size: 11px !important; 
+  }
+
+  .exp-main-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+}

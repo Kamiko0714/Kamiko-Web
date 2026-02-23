@@ -725,42 +725,41 @@ button:hover, .view-detail-btn:hover {
    =================================================== */
 
 @media (max-width: 850px) {
+  html, body {
+    overflow-x: hidden !important;
+    width: 100vw !important;
+  }
+
+  .global-controls {
+    position: relative !important; 
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important; 
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    padding: 10px !important;
+    margin: 0 auto 30px auto !important;
+    box-sizing: border-box !important;
+    top: auto !important;
+    right: auto !important;
+    transform: none !important;
+  }
+
+  main, .modern-container {
+    padding: 20px !important;
+    padding-top: 20px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
   .project-bento-grid,
   .modern-grid,
   .projects-grid-internal,
   .projects-grid-2x2 {
     grid-template-columns: 1fr !important;
     gap: 20px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  html, body {
-    overflow-x: hidden !important;
-    width: 100vw !important;
-  }
-
-  .modern-container {
-    padding: 15px !important; 
-    margin: 0 auto !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .global-controls {
-    position: relative !important;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center !important; 
-    align-items: center;
-    gap: 10px;
-    width: 100% !important;
-    padding: 0 10px !important;
-    margin: 0 auto 30px auto !important;
-    box-sizing: border-box !important;
-    top: auto !important;
-    right: auto !important;
-    transform: none !important;
   }
 
   .modern-card, .project-card-bento {
@@ -769,12 +768,8 @@ button:hover, .view-detail-btn:hover {
     box-sizing: border-box !important;
   }
 
-  pre {
-    font-size: 11px !important; 
-  }
-
-  .exp-main-row {
-    flex-direction: column;
-    gap: 5px;
-  }
+  pre { font-size: 11px !important; }
+  .exp-main-row { flex-direction: column; gap: 5px; }
+  .proj-title { font-size: 1.2rem !important; }
+  .proj-desc { font-size: 0.9rem !important; white-space: normal !important; }
 }

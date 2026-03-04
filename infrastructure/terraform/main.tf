@@ -29,3 +29,19 @@ resource "cloudflare_record" "backend_dns" {
   type    = "CNAME"
   proxied = true
 }
+
+# 5. Tunnel untuk MikroTik (Buat Wake-on-LAN)
+resource "cloudflare_zero_trust_tunnel_cloudflared" "mikrotik_tunnel" {
+  account_id = var.cloudflare_account_id
+  name       = "mikrotik-home-gateway"
+  secret     = var.tunnel_secret
+}
+
+# DNS untuk akses MikroTik
+resource "cloudflare_record" "mikrotik_dns" {
+  zone_id = var.cloudflare_zone_id
+  name    = "manage" # manage.kamiko.dev
+  content = "${cloudflare_zero_trust_tunnel_cloudflared.mikrotik_tunnel.id}.cfargotunnel.com"
+  type    = "CNAME"
+  proxied = true
+}

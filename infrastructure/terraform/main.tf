@@ -1,60 +1,67 @@
-# 1. Tunnel untuk Node 1 (Frontend Dev)
+# --- 1. RESOURCES UNTUK NODE RUMAH (i3-8100) ---
+
+# Tunnel untuk Node 1 (Frontend Dev - SSD)
 resource "cloudflare_zero_trust_tunnel_cloudflared" "node1_tunnel" {
   account_id = var.cloudflare_account_id
-  name       = "node-1-frontend"
+  name       = "node-1"
   secret     = var.tunnel_secret
 }
 
-# 2. Tunnel untuk Node 2 (Backend & QA)
+# Tunnel untuk Node 2 (Backend & QA - HDD)
 resource "cloudflare_zero_trust_tunnel_cloudflared" "node2_tunnel" {
   account_id = var.cloudflare_account_id
-  name       = "node-2-backend"
+  name       = "node-2"
   secret     = var.tunnel_secret
 }
 
-# 3. DNS untuk Frontend
+# DNS Record untuk aplikasi (Frontend)
 resource "cloudflare_record" "frontend_dns" {
   zone_id = var.cloudflare_zone_id
-  name    = "app"
+  name    = "app.kamiko.dev"
   content = "${cloudflare_zero_trust_tunnel_cloudflared.node1_tunnel.id}.cfargotunnel.com"
   type    = "CNAME"
   proxied = true
 }
 
-# 4. DNS untuk Backend
+# DNS Record untuk API/Gitea (Backend)
 resource "cloudflare_record" "backend_dns" {
   zone_id = var.cloudflare_zone_id
-  name    = "api" # api.kamiko.dev
+  name    = "api.kamiko.dev"
   content = "${cloudflare_zero_trust_tunnel_cloudflared.node2_tunnel.id}.cfargotunnel.com"
   type    = "CNAME"
   proxied = true
 }
 
-# 6. Buat Tunnel untuk Azure
+
+# --- 2. RESOURCES UNTUK AZURE CLOUD ---
+
+# Password generator untuk secret tunnel Azure
+resource "random_password" "azure_tunnel_secret" {
+  length  = 32
+  special = false
+}
+
+# Tunnel untuk Azure Witness Server
 resource "cloudflare_zero_trust_tunnel_cloudflared" "azure_tunnel" {
-  account_id = "ae1df14fae7a0766c51e7735135903ef"
+  account_id = var.cloudflare_account_id
   name       = "azure-witness-server"
   secret     = base64encode(random_password.azure_tunnel_secret.result)
 }
 
-resource "random_password" "azure_tunnel_secret" {
-  length = 32
-}
-
-# 6. Buat DNS Record untuk Azure
+# DNS untuk Witness Server
 resource "cloudflare_record" "azure_dns" {
-  zone_id = "d27446f8d7db2ec927e3acb2849e09cb"
+  zone_id = var.cloudflare_zone_id
   name    = "witness"
-  value   = "${cloudflare_zero_trust_tunnel_cloudflared.azure_tunnel.id}.cfargotunnel.com"
+  content = "${cloudflare_zero_trust_tunnel_cloudflared.azure_tunnel.id}.cfargotunnel.com"
   type    = "CNAME"
   proxied = true
 }
 
-# 7. Definisi Tunnel Azure
+# DNS untuk Status Page (Hosted di Azure)
 resource "cloudflare_record" "status_page" {
-  zone_id = "d27446f8d7db2ec927e3acb2849e09cb"
-  name    = "status" # status.kamiko.dev
-  value   = "${cloudflare_zero_trust_tunnel_cloudflared.azure_tunnel.id}.cfargotunnel.com"
+  zone_id = var.cloudflare_zone_id
+  name    = "status"
+  content = "${cloudflare_zero_trust_tunnel_cloudflared.azure_tunnel.id}.cfargotunnel.com"
   type    = "CNAME"
   proxied = true
 }

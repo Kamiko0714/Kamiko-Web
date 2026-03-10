@@ -43,9 +43,7 @@ jobs:
           port: 22
           script: |
             cd ~/Kamiko-Web
-            # Berikan izin agar Nginx bisa baca folder dist yang baru dikirim
             sudo chown -R ${{ secrets.AZURE_VM_USER }}:${{ secrets.AZURE_VM_USER }} ~/Kamiko-Web/dist
             chmod -R 755 ~/Kamiko-Web/dist
-            # Jalankan script deploy (pastikan deploy.sh tidak menghapus folder dist)
             chmod +x deploy.sh
             ./deploy.sh

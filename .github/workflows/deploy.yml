@@ -16,8 +16,13 @@ jobs:
         with:
           node-version: 20
 
+      - name: 🔍 Debug Path
+        run: |
+          pwd
+          ls -R
+
       - name: 🏗️ Install & Build
-        working-directory: ./dashboard-web/main-porto
+        working-directory: dashboard-web/main-porto
         run: |
           npm install
           npm run build

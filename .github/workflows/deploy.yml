@@ -16,12 +16,11 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: 'dashboard-web/main-porto/package-lock.json'
 
       - name: 🏗️ Install & Build
         working-directory: ./dashboard-web/main-porto
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: 📤 Upload Build Files (SCP)
@@ -34,6 +33,7 @@ jobs:
           source: "dashboard-web/main-porto/dist/*"
           target: "~/Kamiko-Web/dist"
           strip_components: 3
+          overwrite: true
 
       - name: 🚀 Finalize Deployment (SSH)
         uses: appleboy/ssh-action@v1.0.3
@@ -43,10 +43,12 @@ jobs:
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
           port: 22
           script: |
-            mkdir -p ~/Kamiko-Web/dist
             cd ~/Kamiko-Web
-            sudo chown -R ${{ secrets.AZURE_VM_USER }}:${{ secrets.AZURE_VM_USER }} .
+            rm -rf src public node_modules package.json package-lock.json index.html
+            
+            sudo chown -R ${{ secrets.AZURE_VM_USER }}:${{ secrets.AZURE_VM_USER }} dist
             chmod -R 755 dist
+            
             if [ -f "deploy.sh" ]; then
               chmod +x deploy.sh
               ./deploy.sh
